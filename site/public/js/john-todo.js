@@ -41,7 +41,8 @@ bb.init = function() {
           self.scroller.refresh()
         }
         else {
-          self.scroller = new iScroll( $("div[data-role='content']")[0] )
+          //noinspection JSPotentiallyInvalidConstructorUsage
+            self.scroller = new iScroll( $("div[data-role='content']")[0] )
         }
       },1)
     }
@@ -51,7 +52,7 @@ bb.init = function() {
   bb.model.State = Backbone.Model.extend(_.extend({    
     defaults: {
       items: 'loading'
-    },
+    }
   }))
 
 
