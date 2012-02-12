@@ -1,9 +1,8 @@
 
 
-.tm {
+#tm {
     display: none;
 }
-
 
 div[data-role='content'] {
     overflow: hidden;

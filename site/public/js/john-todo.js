@@ -57,9 +57,11 @@ bb.init = function () {
 
 
     bb.model.Item = Backbone.Model.extend(_.extend({
+        collection :bb.model.Items,
         defaults:{
             id:'',
-            text:''
+            text:'',
+            done:false
         },
 
         initialize:function () {
@@ -71,8 +73,9 @@ bb.init = function () {
 
 
     bb.model.Items = Backbone.Collection.extend(_.extend({
-        model:bb.model.Item,
         localStorage:new Store("items"),
+        model:bb.model.Item,
+
 
         initialize:function () {
             var self = this
@@ -89,6 +92,11 @@ bb.init = function () {
             self.add(item)
             self.count++
             item.save()
+        },
+
+        testRemove : function (item){
+            var self = this
+            self.remove(item)
         }
 
     }))
@@ -106,10 +114,12 @@ bb.init = function () {
             },
             'tap #save':function () {
                 var self = this
+                console.log('save')
                 var id = new Date().getTime()
                 var item = new bb.model.Item({
                     text:self.elem.text.val(),
-                    id:id
+                    id:id,
+                    done:false
                 })
                 self.items.additem(item)
                 self.hideEditor()
@@ -161,6 +171,7 @@ bb.init = function () {
 
         showEditor:function () {
             var self = this
+            console.log('show editor')
             self.elem.newItem.slideDown()
             self.elem.add.hide()
             self.elem.cancel.show()
@@ -169,6 +180,7 @@ bb.init = function () {
 
         hideEditor:function () {
             var self = this
+            console.log('hide editor')
             self.elem.newItem.slideUp()
             self.elem.cancel.hide()
             self.elem.add.show()
@@ -180,13 +192,6 @@ bb.init = function () {
 
     bb.view.List = Backbone.View.extend(_.extend({
 
-        events:{
-            //  'tap .ui-body-c': function(event){
-            //    var self = this
-            //	console.log(event.target.id)
-            // }
-        },
-
         initialize:function (items) {
             var self = this
             _.bindAll(self)
@@ -195,6 +200,7 @@ bb.init = function () {
 
             self.items = items
             self.items.on('add', self.appenditem)
+            self.items.on('remove', self.removeitem)
         },
 
 
@@ -220,6 +226,10 @@ bb.init = function () {
             //http://forum.jquery.com/topic/dynamically-add-style-list-item
             self.$el.listview("refresh")
             self.scroll()
+        },
+
+        removeitem:function(){
+            console.log("running remove item")
         }
 
     }, scrollContent))//adds scrollContent's functions to the {} that represents the view
@@ -227,12 +237,22 @@ bb.init = function () {
 
     bb.view.Item = Backbone.View.extend(_.extend({
 
-        tagName:"li",//need to call listview refresh to add the proper class styling
+        tagName:"li", //need to call listview refresh to add the proper class styling
+
+        events:{
+            "tap":function () {
+                var self = this
+                var model = self.model
+                console.log("tap " + model.id)
+                model.set("done", !model.get('done'))
+                model.save()
+            }
+        },
 
         initialize:function () {
             var self = this
             _.bindAll(self)
-            self.$el.attr('id',self.model.id)
+            self.$el.attr('id', self.model.id)
             self.render()
         },
 
@@ -242,22 +262,36 @@ bb.init = function () {
             self.$el.append(html)//add the templated html
             var deletebutton = self.tm.deletebutton().attr('id', 'delete_' + self.model.id).hide()
             self.$el.append(deletebutton)
+
             self.$el.swipe(function () {
-                console.log(self.model.id)
-            })
-            self.$el.swipe(function () {
+                console.log("show deletebutton " + self.model.id)
                 deletebutton.show()
             })
             deletebutton.tap(function () {
-                deletebutton.hide()
+                app.model.items.testRemove(self.model)
             })
-            //console.log(item)
+            self.model.on('change:done', function (event) {
+                console.log('change:done')
+                self.refreshuistate()
+            });
+            self.refreshuistate()
+        },
+
+        refreshuistate:function () {
+            var self = this
+            var done = self.model.get('done')
+            console.log("refreshuistate : done = " + done)
+            self.$el.find('span.check').html(done ? '&#10003;' : '&nbsp;')
+            self.$el.find('span.text').css({'text-decoration':done ? 'line-through' : 'none' })
         }
+
+
 
     }, {
         tm:{
             item:_.template($('#ul_tm').html()),
-            deletebutton : function(){
+            deletebutton:function () {
+                //return a new clone everytime
                 return $('#delete_tm').clone()
             }
         }
