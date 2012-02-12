@@ -34,6 +34,7 @@ var bb = {
 bb.init = function () {
 
     var scrollContent = {
+        //extend your view with this to have a scrollable panel with native behavior
         scroll:function () {
             var self = this
             setTimeout(function () {
@@ -57,7 +58,6 @@ bb.init = function () {
 
 
     bb.model.Item = Backbone.Model.extend(_.extend({
-        collection :bb.model.Items,
         defaults:{
             id:'',
             text:'',
@@ -67,38 +67,32 @@ bb.init = function () {
         initialize:function () {
             var self = this
             _.bindAll(self)
+        },
+
+        toggle:function () {
+            var self = this
+            console.log('toggle')
+            self.set('done', !self.get("done"))//fires a change event
+            self.save();
         }
 
     }))
 
 
     bb.model.Items = Backbone.Collection.extend(_.extend({
-        localStorage:new Store("items"),
         model:bb.model.Item,
-
+        localStorage:new Store("items"),
 
         initialize:function () {
             var self = this
             _.bindAll(self)
-            self.count = 0
-
-            self.on('reset', function () {
-                self.count = self.length
-            })
         },
 
         additem:function (item) {
             var self = this
             self.add(item)
-            self.count++
             item.save()
-        },
-
-        testRemove : function (item){
-            var self = this
-            self.remove(item)
         }
-
     }))
 
 
@@ -116,13 +110,16 @@ bb.init = function () {
                 var self = this
                 console.log('save')
                 var id = new Date().getTime()
-                var item = new bb.model.Item({
-                    text:self.elem.text.val(),
-                    id:id,
-                    done:false
-                })
-                self.items.additem(item)
-                self.hideEditor()
+                var todoText = self.elem.text.val();
+                if (todoText) {
+                    var item = new bb.model.Item({
+                        text:todoText,
+                        id:id,
+                        done:false
+                    })
+                    self.items.additem(item)
+                    self.hideEditor()
+                }
             }
         },
 
@@ -147,12 +144,13 @@ bb.init = function () {
                 title:_.template(self.elem.title.html())
             }
 
-            self.elem.add.hide()
+            self.elem.add.hide()//add is shown when state is loaded
             self.elem.cancel.hide()
             self.elem.newItem.hide()
 
             app.model.state.on('change:items', self.render)
             self.items.on('add', self.render)
+            self.items.on('remove', self.render)
         },
 
         render:function () {
@@ -172,16 +170,17 @@ bb.init = function () {
         showEditor:function () {
             var self = this
             console.log('show editor')
+            //when editing we want to show the cancel button instead of the add button
             self.elem.newItem.slideDown()
             self.elem.add.hide()
             self.elem.cancel.show()
-            self.elem.text.focus()
         },
 
         hideEditor:function () {
             var self = this
             console.log('hide editor')
             self.elem.newItem.slideUp()
+            //show the add button and hide the cancel button
             self.elem.cancel.hide()
             self.elem.add.show()
             self.elem.text.val('').blur()
@@ -200,7 +199,6 @@ bb.init = function () {
 
             self.items = items
             self.items.on('add', self.appenditem)
-            self.items.on('remove', self.removeitem)
         },
 
 
@@ -217,22 +215,25 @@ bb.init = function () {
 
         appenditem:function (item) {
             var self = this
+            console.log('additem called')
 
             var itemview = new bb.view.Item({
                 model:item
             })
 
             self.$el.append(itemview.$el)
-            //http://forum.jquery.com/topic/dynamically-add-style-list-item
-            self.$el.listview("refresh")
-            self.scroll()
+            self.refreshList()
+            //self.scroll()
         },
 
-        removeitem:function(){
-            console.log("running remove item")
+        refreshList:function () {
+            var self = this
+            console.log('bb.view.List refresh')
+            //http://forum.jquery.com/topic/dynamically-add-style-list-item
+            self.$el.listview("refresh")
         }
 
-    }, scrollContent))//adds scrollContent's functions to the {} that represents the view
+    }/*,scrollContent*/))//adds scrollContent's functions to the {} that represents the view
 
 
     bb.view.Item = Backbone.View.extend(_.extend({
@@ -240,12 +241,12 @@ bb.init = function () {
         tagName:"li", //need to call listview refresh to add the proper class styling
 
         events:{
-            "tap":function () {
+            'tap':function () {
                 var self = this
                 var model = self.model
                 console.log("tap " + model.id)
-                model.set("done", !model.get('done'))
-                model.save()
+                model.toggle()
+                return false
             }
         },
 
@@ -254,38 +255,51 @@ bb.init = function () {
             _.bindAll(self)
             self.$el.attr('id', self.model.id)
             self.render()
+            self.model.bind('destroy', self.remove, self)
         },
 
         render:function () {
             var self = this
+
             var html = self.tm.item(self.model.toJSON())//model is set in view.List.appendItem, text is shown as that is in the template -text
             self.$el.append(html)//add the templated html
+
             var deletebutton = self.tm.deletebutton().attr('id', 'delete_' + self.model.id).hide()
             self.$el.append(deletebutton)
 
             self.$el.swipe(function () {
                 console.log("show deletebutton " + self.model.id)
-                deletebutton.show()
+                deletebutton.toggle()
+                return false
             })
+
             deletebutton.tap(function () {
-                app.model.items.testRemove(self.model)
+                self.model.destroy()
             })
+            //bind the view to changes in the model
             self.model.on('change:done', function (event) {
                 console.log('change:done')
                 self.refreshuistate()
             });
+            //ensure the view represents the state of the model
             self.refreshuistate()
         },
+
 
         refreshuistate:function () {
             var self = this
             var done = self.model.get('done')
             console.log("refreshuistate : done = " + done)
-            self.$el.find('span.check').html(done ? '&#10003;' : '&nbsp;')
-            self.$el.find('span.text').css({'text-decoration':done ? 'line-through' : 'none' })
+            var check = self.$el.find('span.check')
+            var text = self.$el.find('span.text')
+            check.html(done ? '&#10003;' : '&nbsp;')
+            text.css({'text-decoration':done ? 'line-through' : 'none' })
+        },
+
+        remove:function () {
+            var self = this
+            $(self.$el).remove();
         }
-
-
 
     }, {
         tm:{

@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9f92d2c0-e324-4644-943b-9d8c2d656f0c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/site/public/css/john-todo.css" afterPath="$PROJECT_DIR$/site/public/css/john-todo.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/site/public/js/john-todo.js" afterPath="$PROJECT_DIR$/site/public/js/john-todo.js" />
     </list>
     <ignored path="ToDoClient.iws" />
@@ -74,7 +72,7 @@
       <file leaf-file-name="john-todo.css" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/site/public/css/john-todo.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="0" selection-start="29" selection-end="29" vertical-scroll-proportion="0.0">
+            <state line="41" column="81" selection-start="598" selection-end="598" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -83,16 +81,7 @@
       <file leaf-file-name="john-todo.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/site/public/js/john-todo.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="98" column="21" selection-start="1975" selection-end="1975" vertical-scroll-proportion="0.37394452">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="backbone.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/site/public/js/backbone.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1123" column="4" selection-start="43069" selection-end="43069" vertical-scroll-proportion="0.0">
+            <state line="94" column="9" selection-start="1979" selection-end="1979" vertical-scroll-proportion="0.33293125">
               <folding />
             </state>
           </provider>
@@ -381,7 +370,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1202" height="1050" extended-state="1" />
+    <frame x="0" y="0" width="1202" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -458,14 +447,7 @@
     <MESSAGE value="test IDEA" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/site/public/js/john-todo.js</url>
-          <line>270</line>
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/site/public/css/jquery.mobile.css">
@@ -478,21 +460,9 @@
         <state line="32" column="25" selection-start="1449" selection-end="1449" vertical-scroll-proportion="0.3325527" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/site/public/js/backbone.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1123" column="4" selection-start="43069" selection-end="43069" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/site/public/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="46" column="17" selection-start="1440" selection-end="1445" vertical-scroll-proportion="-21.23077">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/site/public/css/john-todo.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="0" selection-start="29" selection-end="29" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -511,9 +481,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/site/public/css/john-todo.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="81" selection-start="598" selection-end="598" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/site/public/js/jquery.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3464" column="0" selection-start="93030" selection-end="93030" vertical-scroll-proportion="0.3325527">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/site/public/js/backbone.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="146" column="2" selection-start="5463" selection-end="5463" vertical-scroll-proportion="0.3325527">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/site/public/js/john-todo.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="98" column="21" selection-start="1975" selection-end="1975" vertical-scroll-proportion="0.37394452">
+        <state line="94" column="9" selection-start="1979" selection-end="1979" vertical-scroll-proportion="0.33293125">
           <folding />
         </state>
       </provider>
