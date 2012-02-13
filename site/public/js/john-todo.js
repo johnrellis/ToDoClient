@@ -59,7 +59,7 @@ bb.init = function () {
 
     bb.model.Item = Backbone.Model.extend(_.extend({
         defaults:{
-            id:'',
+            //id:'',
             text:'',
             done:false
         },
@@ -81,8 +81,8 @@ bb.init = function () {
 
     bb.model.Items = Backbone.Collection.extend(_.extend({
         model:bb.model.Item,
-        localStorage:new Store("items"),
-
+        //localStorage:new Store("items"),
+        url: '/api/rest/todo',
         initialize:function () {
             var self = this
             _.bindAll(self)
@@ -109,12 +109,12 @@ bb.init = function () {
             'tap #save':function () {
                 var self = this
                 console.log('save')
-                var id = new Date().getTime()
+                //var id = new Date().getTime()
                 var todoText = self.elem.text.val();
                 if (todoText) {
                     var item = new bb.model.Item({
                         text:todoText,
-                        id:id,
+                        //id:id,
                         done:false
                     })
                     self.items.additem(item)
