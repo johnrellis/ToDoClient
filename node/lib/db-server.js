@@ -36,7 +36,7 @@ function init() {
         res.err$ = function (win) {
             return function (err, output) {
                 if (err) {
-                    console.log(err)
+                    console.log("!!!! An Error Occurred " + err)
                     res.send$(500, err)
                 }
                 else {

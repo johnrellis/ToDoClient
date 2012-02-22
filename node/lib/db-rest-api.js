@@ -2,7 +2,7 @@
 
 var common = require('./common')
 
-var uuid    = common.uuid
+//var uuid    = common.uuid
 var mongodb = common.mongodb
 
 
@@ -48,7 +48,7 @@ exports.rest = {
 
     create: function( req, res ) {
         var input = req.body
-
+        console.log("creating db entry " + input.text)
         if( !util.validate(input) ) {
             return res.send$(400, 'invalid')
         }
@@ -59,10 +59,19 @@ exports.rest = {
             created: new Date().getTime()
         }
 
-        todocoll.insert(todo, res.err$(res,function( docs ){
-            var output = util.fixid( docs[0] )
-            res.sendjson$( output )
-        }))
+//        todocoll.insert(todo, res.err$(res,function( docs ){
+//            var output = util.fixid( docs[0] )
+//            console.log("returning " + JSON.stringify(output))
+//            res.sendjson$( output )
+//        }))
+        todocoll.insert(todo, {safe:true}, function(err,objects){
+            if(err){
+                console.log("Error when inserting")
+            } else {
+                console.log(JSON.stringify(objects))
+                common.sendjson(res, util.fixid( objects[0]))
+            }
+        })
     },
 
 

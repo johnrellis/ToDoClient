@@ -91,7 +91,7 @@ bb.init = function () {
         additem:function (item) {
             var self = this
             self.add(item)
-            item.save()
+            item.save({success: function(model,response){console.log("Success")}})
         }
     }))
 
