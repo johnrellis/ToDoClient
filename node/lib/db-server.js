@@ -34,12 +34,17 @@ function init() {
         }
 
         res.err$ = function (win) {
+            //returns the callback function with two params so for example, the mongo insert uses this returned function
+            //as a callback, the callback has a closure containing "win" at runtime
             return function (err, output) {
+                console.log("Calling res.err$ callback")
                 if (err) {
-                    console.log("!!!! An Error Occurred " + err)
                     res.send$(500, err)
                 }
                 else {
+                    //same as : win == null ? null : win(output)
+                    //same as : win == null ? win : win(output)
+                    //win may be null as javascript does not enforce a set num of arguments when a function is called
                     win && win(output)
                 }
             }
