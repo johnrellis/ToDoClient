@@ -82,7 +82,7 @@ bb.init = function () {
     bb.model.Items = Backbone.Collection.extend(_.extend({
         model:bb.model.Item,
         //localStorage:new Store("items"),
-        url: '/api/rest/todo',
+        url:'/api/rest/todo',
         initialize:function () {
             var self = this
             _.bindAll(self)
@@ -91,7 +91,9 @@ bb.init = function () {
         additem:function (item) {
             var self = this
             self.add(item)
-            item.save({success: function(model,response){console.log("Success")}})
+            item.save({success:function (model, response) {
+                console.log("Success")
+            }})
         }
     }))
 
@@ -100,12 +102,60 @@ bb.init = function () {
         events:{
             'tap #add':function () {
                 var self = this
-                self.showEditor()
+                //TODO : unsure about accessing items using the app namespace.  Might limit re-usability of views
+                app.view.newItem.showEditor()
             },
             'tap #cancel':function () {
                 var self = this
-                self.hideEditor()
-            },
+                //TODO : unsure about accessing items using the app namespace.  Might limit re-usability of views
+                app.view.newItem.hideEditor()
+            }
+        },
+
+        initialize:function (items) {
+            var self = this
+
+            _.bindAll(self)
+            self.items = items
+
+            self.setElement("div[data-role='header']")
+
+            self.elem = {
+                add:self.$el.find('#add'),
+                cancel:self.$el.find('#cancel'),
+                title:self.$el.find('h1')
+            }
+
+            self.tm = {
+                title:_.template(self.elem.title.html())
+            }
+
+            self.elem.add.hide()//add is shown when state is loaded
+            self.elem.cancel.hide()
+
+            app.model.state.on('change:items', self.render)
+            self.items.on('add', self.render)
+            self.items.on('remove', self.render)
+        },
+
+        render:function () {
+            var self = this
+
+            var loaded = 'loaded' == app.model.state.get('items')
+
+            self.elem.title.html(self.tm.title({
+                title:loaded ? self.items.length + ' Items' : 'Loading...'
+            }))
+
+            if (loaded) {
+                self.elem.add.show()
+            }
+        }
+    }))
+
+    bb.view.NewItem = Backbone.View.extend(_.extend({
+
+        events:{
             'tap #save':function () {
                 var self = this
                 console.log('save')
@@ -125,67 +175,41 @@ bb.init = function () {
 
         initialize:function (items) {
             var self = this
-
             _.bindAll(self)
+            self.setElement('#newItem')
+
             self.items = items
 
-            self.setElement("div[data-role='header']")
-
             self.elem = {
-                add:self.$el.find('#add'),
-                cancel:self.$el.find('#cancel'),
-                title:self.$el.find('h1'),
-                newItem:self.$el.find('#newItem'),
                 save:self.$el.find('#save'),
                 text:self.$el.find('#text')
             }
 
-            self.tm = {
-                title:_.template(self.elem.title.html())
-            }
-
-            self.elem.add.hide()//add is shown when state is loaded
-            self.elem.cancel.hide()
-            self.elem.newItem.hide()
-
-            app.model.state.on('change:items', self.render)
-            self.items.on('add', self.render)
-            self.items.on('remove', self.render)
         },
 
         render:function () {
             var self = this
-
-            var loaded = 'loaded' == app.model.state.get('items')
-
-            self.elem.title.html(self.tm.title({
-                title:loaded ? self.items.length + ' Items' : 'Loading...'
-            }))
-
-            if (loaded) {
-                self.elem.add.show()
-            }
         },
 
         showEditor:function () {
             var self = this
             console.log('show editor')
-            //when editing we want to show the cancel button instead of the add button
-            self.elem.newItem.slideDown()
-            self.elem.add.hide()
-            self.elem.cancel.show()
+            self.$el.slideDown()
+            //TODO : unsure about accessing items in the app context, limits the re-usability of the view
+            // but passing around references might be worse
+            app.view.head.elem.add.hide()//when editing we want to show the cancel button instead of the add button
+            app.view.head.elem.cancel.show()
         },
 
         hideEditor:function () {
             var self = this
             console.log('hide editor')
-            self.elem.newItem.slideUp()
+            self.$el.slideUp()
             //show the add button and hide the cancel button
-            self.elem.cancel.hide()
-            self.elem.add.show()
+            app.view.head.elem.cancel.hide()
+            app.view.head.elem.add.show()
             self.elem.text.val('').blur()
         }
-
     }))
 
 
@@ -305,7 +329,7 @@ bb.init = function () {
         tm:{
             item:_.template($('#ul_tm').html()),
             deletebutton:function () {
-                //return a new clone everytime
+                //return a new clone every time
                 return $('#delete_tm').clone()
             }
         }
@@ -330,7 +354,6 @@ app.init = function () {
 
     app.init_browser()
 
-
     app.model.state = new bb.model.State()
     app.model.items = new bb.model.Items()
 
@@ -339,6 +362,9 @@ app.init = function () {
 
     app.view.list = new bb.view.List(app.model.items)
     app.view.list.render()
+
+    app.view.newItem = new bb.view.NewItem(app.model.items)
+    app.view.newItem.$el.hide()
 
     app.model.items.fetch({
         success:function () {
