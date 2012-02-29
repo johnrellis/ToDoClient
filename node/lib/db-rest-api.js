@@ -56,7 +56,8 @@ exports.rest = {
         var todoItem = {
             text:input.text,
             done:input.done,
-            created:new Date().getTime()
+            created:new Date().getTime(),
+            group:input.group
         }
 
         //lab code had "todocoll.insert(todoItem, res.err$(res,function( docs ){"
@@ -164,7 +165,7 @@ exports.connect = function (options, callback) {
     client.open(function (err, client) {
         if (err) return callback(err);
 
-        client.collection('todo', function (err, collection) {
+        client.collection('todo-john-rellis', function (err, collection) {
             if (err) return callback(err);
 
             todocoll = collection

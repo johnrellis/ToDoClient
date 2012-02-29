@@ -61,7 +61,8 @@ bb.init = function () {
         defaults:{
             //id:'',
             text:'',
-            done:false
+            done:false,
+            group:"General"
         },
 
         initialize:function () {
@@ -74,6 +75,18 @@ bb.init = function () {
             console.log('toggle')
             self.set('done', !self.get("done"))//fires a change event
             self.save();
+        }
+
+    }))
+
+    bb.model.GroupItem = Backbone.Model.extend(_.extend({
+        defaults:{
+            name:"General"
+        },
+
+        initialize:function () {
+            var self = this
+            _.bindAll(self)
         }
 
     }))
@@ -161,11 +174,13 @@ bb.init = function () {
                 console.log('save')
                 //var id = new Date().getTime()
                 var todoText = self.elem.text.val();
+                var groupName = self.elem.newGroup.val()
                 if (todoText) {
                     var item = new bb.model.Item({
                         text:todoText,
                         //id:id,
-                        done:false
+                        done:false,
+                        group:groupName
                     })
                     self.items.additem(item)
                     self.hideEditor()
@@ -176,13 +191,14 @@ bb.init = function () {
         initialize:function (items) {
             var self = this
             _.bindAll(self)
-            self.setElement('#newItem')
+            self.setElement('#new-item')
 
             self.items = items
 
             self.elem = {
                 save:self.$el.find('#save'),
-                text:self.$el.find('#text')
+                text:self.$el.find('#text'),
+                newGroup:self.$el.find('#new-group')
             }
 
         },
@@ -231,23 +247,62 @@ bb.init = function () {
 
             self.$el.empty()
 
+//            var groups = self.items.pluck("group").sort()
+//
+//            for (var i = 0; i < groups.length; i++) {
+//                var group = groups[i]
+//                var itemsInGroup = self.items.filter(function (item) {
+//                    return item.get("group") == group
+//                })
+//                self.appendgroup(group)
+//                self.appendItems(itemsInGroup)
+//            }
+
             self.items.each(function (item) {
                 self.appenditem(item)
             })
         },
 
 
+        appendItems:function (items) {
+            var self = this
+            for (var i = 0; i < items.length; i++) {
+                self.appenditem(items[i])
+            }
+        },
+
         appenditem:function (item) {
             var self = this
-            console.log('additem called')
+            console.log('append item called')
+
+            var groupname = item.get("group") || "General"
+            var group = self.findgroup(groupname)
 
             var itemview = new bb.view.Item({
                 model:item
             })
 
-            self.$el.append(itemview.$el)
+            group.after(itemview.$el)
+
+            //self.$el.append(itemview.$el)
             self.refreshList()
             //self.scroll()
+        },
+
+        findgroup:function (groupname) {
+            //finds a group list divider by groupname
+            //if one does not exist, it adds one
+            var self = this;
+            var group = self.$el.find("#" + app.generateGroupId(groupname))
+            if (!group.attr("id")) {
+                var newGroup = new bb.view.GroupItem({
+                    model:new bb.model.GroupItem({name:groupname})
+                })
+                self.$el.append(newGroup.$el)
+                self.refreshList()
+                group = newGroup.$el
+            }
+            return group
         },
 
         refreshList:function () {
@@ -335,6 +390,27 @@ bb.init = function () {
         }
     }))
 
+
+    bb.view.GroupItem = Backbone.View.extend(_.extend({
+
+        tagName:"li", //need to call listview refresh to add the proper class styling
+
+        initialize:function () {
+            var self = this
+            _.bindAll(self)
+            self.$el.attr('data-role', "list-divider")
+            self.render()
+        },
+
+        render:function () {
+            var self = this
+            var name = self.model.get("name")
+            self.$el.html(name)
+            self.$el.attr('id', app.generateGroupId(name))
+        }
+
+    }))
+
 }
 
 
@@ -344,6 +420,10 @@ app.init_browser = function () {
             bottom:0
         })
     }
+}
+
+app.generateGroupId = function (groupname) {
+    return "group-" + groupname;
 }
 
 
@@ -372,7 +452,6 @@ app.init = function () {
             app.view.list.render()
         }
     })
-
 
     console.log('end init')
 }
