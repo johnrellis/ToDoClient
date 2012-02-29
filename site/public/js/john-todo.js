@@ -174,8 +174,13 @@ bb.init = function () {
                 console.log('save')
                 //var id = new Date().getTime()
                 var todoText = self.elem.text.val();
-                var groupName = self.elem.newGroup.val()
-                if (todoText) {
+                var groupName
+                if(self.elem.newGroup.val()){
+                    groupName = self.elem.newGroup.val()
+                } else {
+                    groupName =  self.elem.groupSelect.val()
+                }
+                if (todoText && groupName) {
                     var item = new bb.model.Item({
                         text:todoText,
                         //id:id,
@@ -185,6 +190,25 @@ bb.init = function () {
                     self.items.additem(item)
                     self.hideEditor()
                 }
+            },
+            'tap #add-new-group':function () {
+                var self = this
+
+                self.elem.newGroup.slideDown()
+
+                self.elem.addNewGroup.hide()
+                self.elem.cancelNewGroup.show()
+            },
+
+            'tap #cancel-new-group':function () {
+                var self = this
+
+                self.elem.newGroup.val('')
+                self.elem.newGroup.blur()
+                self.elem.newGroup.slideUp()
+
+                self.elem.addNewGroup.show()
+                self.elem.cancelNewGroup.hide()
             }
         },
 
@@ -198,13 +222,30 @@ bb.init = function () {
             self.elem = {
                 save:self.$el.find('#save'),
                 text:self.$el.find('#text'),
-                newGroup:self.$el.find('#new-group')
+                groupSelect:self.$el.find('#group-select'),
+                newGroup:self.$el.find('#new-group'),
+                cancelNewGroup:self.$el.find('#cancel-new-group'),
+                addNewGroup:self.$el.find('#add-new-group')
             }
-
+            self.elem.newGroup.hide()
+            self.elem.cancelNewGroup.hide()
+            self.items.on('add', self.appendgroup)
         },
 
         render:function () {
             var self = this
+            self.items.each(function(item){
+                self.appendgroup(item)
+            })
+        },
+
+        appendgroup:function (item) {
+            var self = this
+            var groupname = item.get("group")
+            var existingOption = self.elem.groupSelect.find('option[value="' + groupname + '"]');
+            if(!existingOption.attr("value")){
+                self.elem.groupSelect.append("<option value='"+groupname+"'>"+groupname+"</option>")
+            }
         },
 
         showEditor:function () {
@@ -214,7 +255,7 @@ bb.init = function () {
             //TODO : unsure about accessing items in the app context, limits the re-usability of the view
             // but passing around references might be worse
             app.view.head.elem.add.hide()//when editing we want to show the cancel button instead of the add button
-            app.view.head.elem.cancel.show()
+            setTimeout('app.view.head.elem.cancel.show()', 500)//ooooooook, on android we need to debounce by the cancel button by not showing it for half a second
         },
 
         hideEditor:function () {
@@ -223,8 +264,12 @@ bb.init = function () {
             self.$el.slideUp()
             //show the add button and hide the cancel button
             app.view.head.elem.cancel.hide()
-            app.view.head.elem.add.show()
+            setTimeout('app.view.head.elem.add.show()', 500)//ooooooook, on android we need to debounce by the ok button by not showing it for half a second
             self.elem.text.val('').blur()
+            self.elem.newGroup.val('').blur()
+            self.elem.newGroup.hide()
+            self.elem.cancelNewGroup.hide()
+            self.elem.addNewGroup.show()
         }
     }))
 
@@ -247,44 +292,21 @@ bb.init = function () {
 
             self.$el.empty()
 
-//            var groups = self.items.pluck("group").sort()
-//
-//            for (var i = 0; i < groups.length; i++) {
-//                var group = groups[i]
-//                var itemsInGroup = self.items.filter(function (item) {
-//                    return item.get("group") == group
-//                })
-//                self.appendgroup(group)
-//                self.appendItems(itemsInGroup)
-//            }
-
             self.items.each(function (item) {
                 self.appenditem(item)
             })
         },
 
-
-        appendItems:function (items) {
-            var self = this
-            for (var i = 0; i < items.length; i++) {
-                self.appenditem(items[i])
-            }
-        },
-
         appenditem:function (item) {
             var self = this
             console.log('append item called')
-
-            var groupname = item.get("group") || "General"
+            var groupname = item.get("group") || "General"//default to a general group
             var group = self.findgroup(groupname)
-
             var itemview = new bb.view.Item({
                 model:item
             })
 
-            group.after(itemview.$el)
-
-            //self.$el.append(itemview.$el)
+            group.after(itemview.$el)//place the new item "into" the group
             self.refreshList()
             //self.scroll()
         },
@@ -295,6 +317,7 @@ bb.init = function () {
             var self = this;
             var group = self.$el.find("#" + app.generateGroupId(groupname))
             if (!group.attr("id")) {
+                console.log("Could not find group, creating it " + groupname)
                 var newGroup = new bb.view.GroupItem({
                     model:new bb.model.GroupItem({name:groupname})
                 })
@@ -415,14 +438,15 @@ bb.init = function () {
 
 
 app.init_browser = function () {
-    if (browser.android) {
-        $("#main div[data-role='content']").css({
-            bottom:0
-        })
-    }
+//    if (browser.android) {
+//        $("#main div[data-role='content']").css({
+//            bottom:0
+//        })
+//    }
 }
 
 app.generateGroupId = function (groupname) {
+    //utility to create
     return "group-" + groupname;
 }
 
@@ -450,6 +474,7 @@ app.init = function () {
         success:function () {
             app.model.state.set({items:'loaded'})
             app.view.list.render()
+            app.view.newItem.render()
         }
     })
 
