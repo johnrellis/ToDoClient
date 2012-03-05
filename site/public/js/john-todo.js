@@ -5,7 +5,7 @@ function pd(func) {
     }
 }
 
-document.ontouchmove = pd()
+document.ontouchmove = pd()//nicely prevents the browser from being moved arounds
 
 _.templateSettings = {
     interpolate:/\{\{(.+?)\}\}/g,
@@ -15,7 +15,7 @@ _.templateSettings = {
 
 
 var browser = {
-    android:/Android/.test(navigator.userAgent)//regex/.text('string to be tested')
+    android:/Android/.test(navigator.userAgent)//regex/.test('string to be tested')
 }
 browser.iphone = !browser.android
 
@@ -33,19 +33,23 @@ var bb = {
 
 bb.init = function () {
 
+    //TODO : iScroll is causing UI refresh issues in mobile safari and android.
+    //TODO : iScroll is causing JQuery select item to fail
     var scrollContent = {
         //extend your view with this to have a scrollable panel with native behavior
         scroll:function () {
             var self = this
-            setTimeout(function () {
-                if (self.scroller) {
-                    self.scroller.refresh()
-                }
-                else {
-                    //noinspection JSPotentiallyInvalidConstructorUsage
-                    self.scroller = new iScroll($("div[data-role='content']")[0])
-                }
-            }, 1)
+            if (browser.iphone) {
+                setTimeout(function () {
+                    if (self.scroller) {
+                        self.scroller.refresh()
+                    }
+                    else {
+                        //noinspection JSPotentiallyInvalidConstructorUsage
+                        self.scroller = new iScroll($("div[data-role='content']")[0])
+                    }
+                }, 1)
+            }
         }
     }
 
@@ -56,10 +60,10 @@ bb.init = function () {
         }
     }))
 
-
+    //this is the actual to do item, holds the text, whether it is done, and the group the to do belongs to
+    //your view component should bind to the the done property, an example is in bb.view.item where 'change:done' is used
     bb.model.Item = Backbone.Model.extend(_.extend({
         defaults:{
-            //id:'',
             text:'',
             done:false,
             group:"General"
@@ -73,12 +77,13 @@ bb.init = function () {
         toggle:function () {
             var self = this
             console.log('toggle')
-            self.set('done', !self.get("done"))//fires a change event
+            self.set('done', !self.get("done"))//fires a change event, currently cought by bb.view.item
             self.save();
         }
 
     }))
 
+    //represents a category for to do items to reside in
     bb.model.GroupItem = Backbone.Model.extend(_.extend({
         defaults:{
             name:"General"
@@ -92,10 +97,11 @@ bb.init = function () {
     }))
 
 
+    //stores all the to do items
     bb.model.Items = Backbone.Collection.extend(_.extend({
         model:bb.model.Item,
-        //localStorage:new Store("items"),
         url:'/api/rest/todo',
+
         initialize:function () {
             var self = this
             _.bindAll(self)
@@ -104,25 +110,29 @@ bb.init = function () {
         additem:function (item) {
             var self = this
             self.add(item)
-            item.save({success:function (model, response) {
-                console.log("Success")
-            }})
+            item.save()
+            //TODO : asynchronous save does not seem to be working
+            //TODO : deal with failed saves
+            /*item.save({success:function (model, response) {
+             console.log("Success")
+             }})*/
         }
     }))
 
 
+    //the header contains an add button, a hidden cancel button and the title
     bb.view.Head = Backbone.View.extend(_.extend({
         events:{
-            'tap #add':function () {
+            'tap #add':pd(function () {
                 var self = this
                 //TODO : unsure about accessing items using the app namespace.  Might limit re-usability of views
                 app.view.newItem.showEditor()
-            },
-            'tap #cancel':function () {
+            }),
+            'tap #cancel':pd(function () {
                 var self = this
                 //TODO : unsure about accessing items using the app namespace.  Might limit re-usability of views
                 app.view.newItem.hideEditor()
-            }
+            })
         },
 
         initialize:function (items) {
@@ -146,6 +156,7 @@ bb.init = function () {
             self.elem.add.hide()//add is shown when state is loaded
             self.elem.cancel.hide()
 
+            //update the header by binding to the items model
             app.model.state.on('change:items', self.render)
             self.items.on('add', self.render)
             self.items.on('remove', self.render)
@@ -166,24 +177,25 @@ bb.init = function () {
         }
     }))
 
+    //wraps '#new-item'
     bb.view.NewItem = Backbone.View.extend(_.extend({
 
         events:{
             'tap #save':function () {
                 var self = this
                 console.log('save')
-                //var id = new Date().getTime()
+
                 var todoText = self.elem.text.val();
                 var groupName
-                if(self.elem.newGroup.val()){
+                //if new group has a value, use that as the group
+                if (self.elem.newGroup.val()) {
                     groupName = self.elem.newGroup.val()
                 } else {
-                    groupName =  self.elem.groupSelect.val()
+                    groupName = self.elem.groupSelect.val()
                 }
                 if (todoText && groupName) {
                     var item = new bb.model.Item({
                         text:todoText,
-                        //id:id,
                         done:false,
                         group:groupName
                     })
@@ -229,22 +241,25 @@ bb.init = function () {
             }
             self.elem.newGroup.hide()
             self.elem.cancelNewGroup.hide()
+            //whenever an item is added to items, ensure the group select has its group
             self.items.on('add', self.appendgroup)
         },
 
         render:function () {
             var self = this
-            self.items.each(function(item){
+            self.items.each(function (item) {
                 self.appendgroup(item)
             })
         },
 
         appendgroup:function (item) {
             var self = this
+            // add the items group if it doesn't exist already
             var groupname = item.get("group")
             var existingOption = self.elem.groupSelect.find('option[value="' + groupname + '"]');
-            if(!existingOption.attr("value")){
-                self.elem.groupSelect.append("<option value='"+groupname+"'>"+groupname+"</option>")
+            if (!existingOption.attr("value")) {
+                //TODO : this should use templates
+                self.elem.groupSelect.append("<option value='" + groupname + "'>" + groupname + "</option>")
             }
         },
 
@@ -255,7 +270,7 @@ bb.init = function () {
             //TODO : unsure about accessing items in the app context, limits the re-usability of the view
             // but passing around references might be worse
             app.view.head.elem.add.hide()//when editing we want to show the cancel button instead of the add button
-            setTimeout('app.view.head.elem.cancel.show()', 500)//ooooooook, on android we need to debounce by the cancel button by not showing it for half a second
+            app.view.head.elem.cancel.show()
         },
 
         hideEditor:function () {
@@ -264,7 +279,7 @@ bb.init = function () {
             self.$el.slideUp()
             //show the add button and hide the cancel button
             app.view.head.elem.cancel.hide()
-            setTimeout('app.view.head.elem.add.show()', 500)//ooooooook, on android we need to debounce by the ok button by not showing it for half a second
+            app.view.head.elem.add.show()
             self.elem.text.val('').blur()
             self.elem.newGroup.val('').blur()
             self.elem.newGroup.hide()
@@ -274,6 +289,7 @@ bb.init = function () {
     }))
 
 
+    //wraps #list
     bb.view.List = Backbone.View.extend(_.extend({
 
         initialize:function (items) {
@@ -283,6 +299,7 @@ bb.init = function () {
             self.setElement('#list')
 
             self.items = items
+            //whenever an item is added, call the appendItem function
             self.items.on('add', self.appenditem)
         },
 
@@ -355,7 +372,6 @@ bb.init = function () {
         initialize:function () {
             var self = this
             _.bindAll(self)
-            self.$el.attr('id', self.model.id)
             self.render()
             self.model.bind('destroy', self.remove, self)
         },
@@ -366,7 +382,7 @@ bb.init = function () {
             var html = self.tm.item(self.model.toJSON())//model is set in view.List.appendItem, text is shown as that is in the template -text
             self.$el.append(html)//add the templated html
 
-            var deletebutton = self.tm.deletebutton().attr('id', 'delete_' + self.model.id).hide()
+            var deletebutton = self.tm.deletebutton().hide()
             self.$el.append(deletebutton)
 
             self.$el.swipe(function () {
@@ -390,6 +406,7 @@ bb.init = function () {
 
         refreshuistate:function () {
             var self = this
+            //ensure the UI faithfully represents the model
             var done = self.model.get('done')
             console.log("refreshuistate : done = " + done)
             var check = self.$el.find('span.check')
@@ -413,7 +430,7 @@ bb.init = function () {
         }
     }))
 
-
+    //creates a new list divider for each group
     bb.view.GroupItem = Backbone.View.extend(_.extend({
 
         tagName:"li", //need to call listview refresh to add the proper class styling
@@ -438,15 +455,15 @@ bb.init = function () {
 
 
 app.init_browser = function () {
-//    if (browser.android) {
-//        $("#main div[data-role='content']").css({
-//            bottom:0
-//        })
-//    }
+    if (browser.android) {
+        $("#main div[data-role='content']").css({
+            bottom:0
+        })
+    }
 }
 
 app.generateGroupId = function (groupname) {
-    //utility to create
+    //utility to create a div id for a group within the list
     return "group-" + groupname;
 }
 
@@ -461,14 +478,14 @@ app.init = function () {
     app.model.state = new bb.model.State()
     app.model.items = new bb.model.Items()
 
-    app.view.head = new bb.view.Head(app.model.items)
-    app.view.head.render()
-
     app.view.list = new bb.view.List(app.model.items)
     app.view.list.render()
 
     app.view.newItem = new bb.view.NewItem(app.model.items)
     app.view.newItem.$el.hide()
+
+    app.view.head = new bb.view.Head(app.model.items)
+    app.view.head.render()
 
     app.model.items.fetch({
         success:function () {
