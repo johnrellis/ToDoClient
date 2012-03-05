@@ -258,7 +258,7 @@ bb.init = function () {
             var groupname = item.get("group")
             var existingOption = self.elem.groupSelect.find('option[value="' + groupname + '"]');
             if (!existingOption.attr("value")) {
-                //TODO : this should use templates
+                //TODO : this should use templates?
                 self.elem.groupSelect.append("<option value='" + groupname + "'>" + groupname + "</option>")
             }
         },
