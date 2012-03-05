@@ -12,7 +12,6 @@
     <script src="js/jquery.mobile.js"></script>
     <script src="js/underscore.js"></script>
     <script src="js/backbone.js"></script>
-    <!--<script src="js/backbone.localStorage.js"></script>-->
     <script src="js/iscroll.js"></script>
 
     <script src="js/john-todo.js"></script>
@@ -30,28 +29,23 @@
     <div data-role="content">
 
         <div id='new-item'>
-            <!--<div data-role="fieldcontain" class="ui-hide-label">-->
-                <input type="text" id="text" placeholder="enter to do item" class="ui-hide-label"/><br>
-            <!--</div>-->
-            <!--<div data-role="fieldcontain">-->
-                <!--<label for="select-choice-1" class="select">Group:</label>-->
-                <select name="group-select" id="group-select">
-                    <option value="General">General</option>
-                </select>
-            <!--</div>-->
-            <!--<div data-role="fieldcontain">-->
-                <input type="text" id="new-group" placeholder="enter a new group" class="ui-hide-label"/>
-            <!--</div>-->
+            <input type="text" id="text" placeholder="enter to do item" class="ui-hide-label"/><br>
+            <select name="group-select" id="group-select">
+                <option value="General">General</option>
+            </select>
+            <input type="text" id="new-group" placeholder="enter a new group" class="ui-hide-label"/>
+
             <div data-role="fieldcontain">
                 <a id="save" data-role="button" data-inline="true" data-icon='plus' class="ui-hide-label">Save</a>
-                <a id="add-new-group" data-role="button" data-inline="true" data-icon='plus' class="ui-hide-label">New Group</a>
-                <a id="cancel-new-group" data-role="button" data-inline="true" data-icon='minus' class="ui-hide-label">Cancel New Group</a>
+                <a id="add-new-group" data-role="button" data-inline="true" data-icon='plus' class="ui-hide-label">New
+                    Group</a>
+                <a id="cancel-new-group" data-role="button" data-inline="true" data-icon='minus' class="ui-hide-label">Cancel
+                    New Group</a>
             </div>
         </div>
 
 
         <ul id="list" data-role="listview">
-            <!--list items added by backbone, template is in ul_tm-->
         </ul>
 
     </div>

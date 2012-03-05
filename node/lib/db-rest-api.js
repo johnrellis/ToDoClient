@@ -2,7 +2,6 @@
 
 var common = require('./common')
 
-//var uuid    = common.uuid
 var mongodb = common.mongodb
 
 
@@ -134,7 +133,6 @@ exports.rest = {
         todocoll.update(query, {$set:{text:input.text, done:input.done}}, {safe:true}, res.err$(function (count) {
             console.log("Result of update : " + count)
             if (0 < count) {
-                //var output = util.fixid( doc ) // doc does not exist here.
                 var output = {id:id}
                 res.sendjson$(output)
             }

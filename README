@@ -1,0 +1,23 @@
+Server Architecture :
+
+Web Server :
+nginx : nginx is used as the front end web server.  A backup of its configuration is in the conf directory.
+It is a pretty standard set up except that it was set up to run on port 81 to avoid conflicts on windows 7, this was
+achieved by setting the http.server.listen property to 81.  Secondly, all calls to the root /api are proxied to a node.js
+server via "proxy_pass http://127.0.0.1:8180/api/;"
+
+node.js : node.js is used to create a rest api that uses mongodb as its datasource.  To start the node.js server, simply
+run node lib/db-server.js.  It sets up a server on port 8180 that nginx proxies to. The rest api is contained within db-rest-api.js.
+common.js contains the configuration for the node.js server such as the required modules and any useful application wide functions.
+There are two modules used :
+connect : http server framework https://github.com/senchalabs/Connect
+mongodb : a low level api for connecting to mongo-db https://github.com/christkv/node-mongodb-native
+
+mongodb : mongodb handles the persistence.  By default mongodb runs on port 27017 and db-server.js is set up to connect to this port.
+The database name is "johnrellis" and the collection is "todo-john-rellis", the connection to the collection is cached in db-rest-api.js.
+The current "schema" is text, done, created, group for each todo document. mongodb is queried via the create, update, read, list and del
+of exports.rest in db-rest-api.js.
+
+Client Architecture :
+
+

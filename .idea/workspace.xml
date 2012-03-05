@@ -2,9 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9f92d2c0-e324-4644-943b-9d8c2d656f0c" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/conf/nginx.conf" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README" afterPath="$PROJECT_DIR$/README" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node/lib/common.js" afterPath="$PROJECT_DIR$/node/lib/common.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node/lib/db-rest-api.js" afterPath="$PROJECT_DIR$/node/lib/db-rest-api.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node/lib/db-server.js" afterPath="$PROJECT_DIR$/node/lib/db-server.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/site/public/index.html" afterPath="$PROJECT_DIR$/site/public/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/site/public/js/john-todo.js" afterPath="$PROJECT_DIR$/site/public/js/john-todo.js" />
     </list>
     <ignored path="ToDoClient.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -74,7 +78,7 @@
       <file leaf-file-name="db-rest-api.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/node/lib/db-rest-api.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="117" column="33" selection-start="2779" selection-end="2779" vertical-scroll-proportion="0.0">
+            <state line="3" column="0" selection-start="56" selection-end="56" vertical-scroll-proportion="18.04">
               <folding />
             </state>
           </provider>
@@ -83,7 +87,34 @@
       <file leaf-file-name="db-server.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/node/lib/db-server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="40" selection-start="712" selection-end="716" vertical-scroll-proportion="-14.28">
+            <state line="12" column="43" selection-start="310" selection-end="310" vertical-scroll-proportion="-8.16">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="common.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/node/lib/common.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="3" column="36" selection-start="100" selection-end="100" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/README">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="18" column="16" selection-start="1448" selection-end="1448" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="nginx.conf" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/conf/nginx.conf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="46" column="51" selection-start="978" selection-end="1016" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -92,7 +123,7 @@
       <file leaf-file-name="john-todo.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/site/public/js/john-todo.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="259" column="41" selection-start="7320" selection-end="7320" vertical-scroll-proportion="-4.24">
+            <state line="462" column="13" selection-start="13943" selection-end="13943" vertical-scroll-proportion="-314.16">
               <folding />
             </state>
           </provider>
@@ -101,7 +132,7 @@
       <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/site/public/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="51" selection-start="1436" selection-end="1436" vertical-scroll-proportion="0.5833333">
+            <state line="47" column="43" selection-start="1812" selection-end="1812" vertical-scroll-proportion="0.84130687">
               <folding />
             </state>
           </provider>
@@ -129,10 +160,12 @@
         <option value="$PROJECT_DIR$/site/public/js/server-test.js" />
         <option value="$PROJECT_DIR$/node/lib/rest-server.js" />
         <option value="$PROJECT_DIR$/node/lib/rest-api.js" />
+        <option value="$PROJECT_DIR$/site/public/js/john-todo.js" />
         <option value="$PROJECT_DIR$/node/lib/db-server.js" />
         <option value="$PROJECT_DIR$/node/lib/db-rest-api.js" />
+        <option value="$PROJECT_DIR$/node/lib/common.js" />
+        <option value="$PROJECT_DIR$/README" />
         <option value="$PROJECT_DIR$/site/public/index.html" />
-        <option value="$PROJECT_DIR$/site/public/js/john-todo.js" />
       </list>
     </option>
   </component>
@@ -140,8 +173,10 @@
     <option name="jreName" value="1.6" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="1101" />
-    <option name="height" value="1050" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1066" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -239,7 +274,15 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="node" />
+              <option name="myItemId" value="site" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="public" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -256,8 +299,18 @@
               <option name="myItemId" value="node" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
+              <option name="myItemId" value="ToDoClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ToDoClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="conf" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -299,6 +352,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\John\workspace\College\ToDoClient\conf" />
       <recent name="C:\Users\John\workspace\College\ToDoClient\site\public\css" />
     </key>
   </component>
@@ -428,29 +482,29 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1101" height="1050" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295964" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32959402" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.256433" sideWeight="0.49663678" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18418515" sideWeight="0.6704036" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32959402" sideWeight="0.0" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -489,7 +543,7 @@
     <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
     <option name="CREATE_PATCH_EXPAND_DETAILS_DEFAULT" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="almost there with list categories" />
+    <option name="LAST_COMMIT_MESSAGE" value="tidied up" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -505,6 +559,8 @@
     <MESSAGE value="test IDEA" />
     <MESSAGE value="moved newItem out of the header" />
     <MESSAGE value="almost there with list categories" />
+    <MESSAGE value="list categroies working" />
+    <MESSAGE value="tidied up" />
   </component>
   <component name="VssConfiguration">
     <option name="CLIENT_PATH" value="" />
@@ -574,55 +630,70 @@
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node/lib/common.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="0" selection-start="518" selection-end="518" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node/lib/rest-server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="11" selection-start="0" selection-end="1096" vertical-scroll-proportion="0.23529412" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node/lib/rest-api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="8" selection-start="892" selection-end="892" vertical-scroll-proportion="0.4117647" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node/node_modules/connect/lib/connect.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="64" column="9" selection-start="1342" selection-end="1342" vertical-scroll-proportion="0.33333334" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/site/public/css/john-todo.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="14" selection-start="598" selection-end="598" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/site/public/js/john-todo.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="462" column="13" selection-start="13943" selection-end="13943" vertical-scroll-proportion="-314.16">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/node/lib/db-server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="40" selection-start="712" selection-end="716" vertical-scroll-proportion="-14.28">
+        <state line="12" column="43" selection-start="310" selection-end="310" vertical-scroll-proportion="-8.16">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node/lib/common.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="36" selection-start="100" selection-end="100" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/conf/nginx.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="46" column="51" selection-start="978" selection-end="1016" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/node/lib/db-rest-api.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="117" column="33" selection-start="2779" selection-end="2779" vertical-scroll-proportion="0.0">
+        <state line="3" column="0" selection-start="56" selection-end="56" vertical-scroll-proportion="18.04">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/site/public/css/john-todo.css">
+    <entry file="file://$PROJECT_DIR$/site/public/css/jquery.mobile.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="14" selection-start="598" selection-end="598" vertical-scroll-proportion="0.0" />
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/site/public/js/john-todo.js">
+    <entry file="file://$PROJECT_DIR$/README">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="259" column="41" selection-start="7320" selection-end="7320" vertical-scroll-proportion="-4.24">
+        <state line="18" column="16" selection-start="1448" selection-end="1448" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/site/public/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="51" selection-start="1436" selection-end="1436" vertical-scroll-proportion="0.5833333">
+        <state line="47" column="43" selection-start="1812" selection-end="1812" vertical-scroll-proportion="0.84130687">
           <folding />
         </state>
       </provider>

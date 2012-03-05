@@ -2,7 +2,6 @@ var buffer = exports.buffer = require('buffer')
 
 // npm modules
 exports.connect = require('connect')
-exports.uuid    = require('node-uuid')
 exports.mongodb = require('mongodb')
 
 

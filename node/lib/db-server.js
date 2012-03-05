@@ -1,5 +1,5 @@
 var common = require('./common')
-var api = require('./db-rest-api')
+var api = require('./db-rest-api')//wired up using router var below
 
 var connect = common.connect
 
@@ -54,6 +54,7 @@ function init() {
         next()
     })
 
+    //connect the server to the rest api
     var router = connect.router(function (app) {
         app.get('/api/ping', api.ping)
         app.get('/api/echo', api.echo)
