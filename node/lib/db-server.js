@@ -12,7 +12,7 @@ function init() {
 
     api.connect(
             {
-                name:   'lab04',
+                name:   'johnrellis',
                 server: '127.0.0.1',
                 port:   27017
             },
