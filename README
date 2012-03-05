@@ -1,3 +1,42 @@
+General Overview :
+
+Overall, I didn't get everything implemented as I would have liked. It took me a little bit to get to grips with
+the client code but can now fully appreciate the excitement around JQuery, even with my very limited JS exposure.
+The concept of wrapping the HTML UI elements with backbone is also a great option.  In saying that I am happy with
+the exposure to new technologies in this assignment.  Looking forward to making up the marks in the next assignment!
+
+Here's the breakdown of what was and wasn't attempted :
+
+Client :
+
+Views : attempted
+Models, Views, Collections : attempted
+event bindings : attempted
+routes : not attempted
+
+server
+in-memory store : superseded by mongodb
+Database of choice : attempted, local installation of mongodb
+Caching : not attempted
+user auth : not attempted
+
+X-platform :
+
+All mobile testing was done on a Nexus S running Ice Cream Sandwich and Mobile Chrome beta.  All functions were found to
+work reliably i.e. adding, removing and editing items and groups.  I had some issues with iScroll that I just ran out
+of time on and didn't resolve.  It was something simple to do with DOM refreshing that I am sure I am close to fixing.
+I attempted testing on iOS4 but there was some issues that I couldn't fix as I left iOS testing too late in the cycle.
+Overall I am moderately happy with how it runs on mobile chrome but I have a bit to learn on getting cross platform
+functionality working. I am used to the write once, run (almost) everywhere that Google Web Toolkit provides.
+
+Functionality :
+replicate to-do list : attempted
+settings page : not attempted
+list of lists : attempted using list dividers to represent categories.  Not sure if this fulfills this requirement.
+Geo location : not attempted
+
+Here is a brief overview of how the pieces of the server and client fit together :
+
 Server Architecture :
 
 Web Server :
@@ -19,5 +58,36 @@ The current "schema" is text, done, created, group for each todo document. mongo
 of exports.rest in db-rest-api.js.
 
 Client Architecture :
+
+The client side code is made up of john-todo.css, john-todo.js and index.html
+
+john-todo.js :
+    Wraps all the UI elements in index.html using backbone.js.  Event binding is used to bind models and view together.
+    backbone.js comes bundled with underscore that provides handy utility methods and also the ability to extend objects.
+    There are two namespaces, app and bb that help to reduce namespace collisions and also allows access to the app object
+    from anywhere in the client JS.  The code is dotted with TODO's and comments to explain wants and functionality.
+    Underscore templates are used to render the items text but should probably be expanded to list dividers and the options of
+    the groups dropdown.
+
+
+index.html :
+
+JQuery mobile is used to create mobile friendly views, backbone.js is used to wrap these views.
+
+The main components of index.html are :
+
+div data-role="header" : wrapped by bb.view.Head
+
+    Shows the status of the app, the number of to do items and contains an add and cancel button
+
+div id='new-item' : wrapped by bb.view.NewItem
+
+    Allows you to add new to do items and new groups, it is shown by the add button in the header
+
+ul id="list" data-role="listview" : wrapped by bb.view.List
+
+    A JQuery mobile list that contains the todo items broken up into groups using list dividers.
+
+
 
 
