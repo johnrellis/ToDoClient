@@ -497,8 +497,6 @@ app.init_browser = function () {
 app.findMyPlace = function () {
 
     var fail = function () {
-        alert("error")
-
         app.model.position.set("address", "We couldn't find you..")
     }
 
