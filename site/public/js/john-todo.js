@@ -60,6 +60,12 @@ bb.init = function () {
         }
     }))
 
+    bb.model.CurrentUniverseCoords = Backbone.Model.extend(_.extend({
+        defaults:{
+            address:'finding location..'
+        }
+    }))
+
     //this is the actual to do item, holds the text, whether it is done, and the group the to do belongs to
     //your view component should bind to the the done property, an example is in bb.view.item where 'change:done' is used
     bb.model.Item = Backbone.Model.extend(_.extend({
@@ -119,6 +125,32 @@ bb.init = function () {
         }
     }))
 
+
+    bb.view.Footer = Backbone.View.extend(_.extend({
+        initialize:function () {
+            var self = this
+            _.bindAll(self)
+            self.setElement("div[data-role='footer']")
+            app.model.position.on('change:address', self.render)
+
+            self.elem = {
+                title:self.$el.find('h4')
+            }
+
+            self.tm = {
+                title:_.template(self.elem.title.html())
+            }
+
+        },
+
+        render:function () {
+            var self = this
+            console.log("render footer")
+            self.elem.title.html(self.tm.title({
+                position:app.model.position.get("address")
+            }))
+        }
+    }))
 
     //the header contains an add button, a hidden cancel button and the title
     bb.view.Head = Backbone.View.extend(_.extend({
@@ -462,6 +494,38 @@ app.init_browser = function () {
     }
 }
 
+app.findMyPlace = function () {
+
+    var fail = function () {
+        alert("error")
+
+        app.model.position.set("address", "We couldn't find you..")
+    }
+
+    var success = function (position) {
+        var lat = position.coords.latitude
+        var lng = position.coords.longitude
+        console.log(lat)
+        console.log(lng)
+        console.log("http://maps.google.com/maps/geo?sensor=false&output=json&q=" + lat + "," + lng + "&callback=?")
+        //        $.getJSON("http://maps.google.com/maps/geo?sensor=false&output=json&q=40.714224,-73.961452&callback=?",
+
+        $.getJSON("http://maps.google.com/maps/geo?sensor=false&output=json&key=AIzaSyBbMYRDWCQuw3xSWSqF2K8kgtrV13mTjt0&q=" + lat + "," + lng + "&callback=?",
+                function (data) {
+                    var address
+                    console.log(data)
+                    console.log(data.Status.code == "200")
+                    if (data.Status.code == "200") {
+                        address = data.Placemark[0].address
+                    } else {
+                        address = lat + "," + lng
+                    }
+                    app.model.position.set("address", address)
+                });
+    }
+    navigator.geolocation.getCurrentPosition(success, fail)
+}
+
 app.generateGroupId = function (groupname) {
     //utility to create a div id for a group within the list
     return "group-" + groupname;
@@ -476,6 +540,7 @@ app.init = function () {
     app.init_browser()
 
     app.model.state = new bb.model.State()
+    app.model.position = new bb.model.CurrentUniverseCoords()
     app.model.items = new bb.model.Items()
 
     app.view.list = new bb.view.List(app.model.items)
@@ -487,6 +552,9 @@ app.init = function () {
     app.view.head = new bb.view.Head(app.model.items)
     app.view.head.render()
 
+    app.view.footer = new bb.view.Footer()
+    app.view.footer.render()
+
     app.model.items.fetch({
         success:function () {
             app.model.state.set({items:'loaded'})
@@ -495,6 +563,7 @@ app.init = function () {
         }
     })
 
+    app.findMyPlace()
     console.log('end init')
 }
 
